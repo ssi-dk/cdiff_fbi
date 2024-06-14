@@ -72,6 +72,7 @@ def revtrans(seq):
 
 
 ## Main
+# Tandem repeat loci TR6 and TR10
 TR6fragments = parse_repeat_sequences(args.trstdb, "TR6_repeat_sequences.ashx")
 TR10fragments = parse_repeat_sequences(args.trstdb, "TR10_repeat_sequences.ashx")
 TR6 = parse_types(args.trstdb, "TR6_types.ashx", TR6fragments)

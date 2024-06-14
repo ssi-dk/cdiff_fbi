@@ -90,9 +90,7 @@ echo "TRSTDB: $trstdb"
 if [[ "$update" == "yes" ]] ; then
 	echo -e "\n# Updating dbs..."
 	## TODO: Find which command was used to make the serumdb, code below is a draft!
-	echo -e "\n# WARNING!: Code not implemented yet!"
-	echo -e "\n# Exiting.."
-	exit 1
+	echo -e "\n# WARNING!: Not yet implemented for serumdb or trstdb!"
 	# # cdiff_serum_readfilter
 	# echo -e "\n# Updating cdiff_serum_readfilter..."
 	# rm -r $serumdb/library $serumdb/taxonomy || true  # Remove old folders
