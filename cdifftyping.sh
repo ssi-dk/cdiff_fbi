@@ -133,7 +133,7 @@ mkdir -p $spcdifffbidir
 prefix="$spcdifffbidir/$sampleid"  # prefix for indexes
 
 
-# Filtering reads with serum_readfilter
+Filtering reads with serum_readfilter
 echo -e "\n# Filtering reads with serum_readfilter..."
 cmd="serum_readfilter runfilter kraken -R1 ${read1} -R2 ${read2} -o $spcdifffbidir/cdifffiltered -db $serumdb"
 r1="$spcdifffbidir/cdifffiltered_R1.fastq"
