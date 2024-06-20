@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 ## qc_cdiff_summary.py
 ## Cdiff related QC analysis
 ## Summarizes the contents of various .csv files by keeping 1 header and concatenating the contents.

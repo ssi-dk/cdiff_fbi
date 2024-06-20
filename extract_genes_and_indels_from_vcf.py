@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 ## extract_genes_and_indels_from_vcf.py
 ## Cdiff related analysis
 ## Extracts genes and indels from a .vcf file according to intervals defined in a .bed file.
