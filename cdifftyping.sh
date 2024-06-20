@@ -28,10 +28,6 @@ process_inputs() {
                 contigs="$2"
                 shift 2
                 ;;
-            -qc)
-                qcstatus="$2"
-                shift 2
-                ;;
             -o)
                 outdir="$2"
                 shift 2
@@ -46,7 +42,7 @@ process_inputs() {
                 ;;
             *)
 				echo "Unknown option: $1"
-                echo "Usage: $0 [-i <sampleid>] [-R1 <read1>] [-R2 <read2>] [-c <contigs.fasta>] [-qc <qcstatus>] [-o <outdir>] -db <db> -update <update:yes/no>"
+                echo "Usage: $0 [-i <sampleid>] [-R1 <read1>] [-R2 <read2>] [-c <contigs.fasta>]  [-o <outdir>] -db <db> -update <update:yes/no>"
                 exit 1
                 ;;
         esac
@@ -55,7 +51,7 @@ process_inputs() {
     # Check if the required arguments -db and -update are provided
     if [ -z "$db" ] || [ -z "$update" ]; then
         echo "Missing required arguments!"
-		echo "Usage: $0 [-i <sampleid>] [-R1 <read1>] [-R2 <read2>] [-c <contigs.fasta>] [-qc <qcstatus>] [-o <outdir>] -db <db> -update <update:yes/no>"
+		echo "Usage: $0 [-i <sampleid>] [-R1 <read1>] [-R2 <read2>] [-c <contigs.fasta>] [-o <outdir>] -db <db> -update <update:yes/no>"
         echo 
         exit 1
     fi
@@ -118,7 +114,6 @@ if [ -n "$sampleid" ] || [ -n "$read1" ] || [ -n "$read2" ] || [ -n "$contigs" ]
 		[ -n "$read1" ] && echo "Read1: $read1"
 		[ -n "$read2" ] && echo "Read2: $read2"
 		[ -n "$contigs" ] && echo "Contigs: $contigs"
-		[ -n "$qcstatus" ] && echo "QC Status: $qcstatus"
 		[ -n "$outdir" ] && echo "Output Directory: $outdir"
 		echo "Database: $db"
 		echo "Update: $update"
@@ -136,27 +131,6 @@ echo "Wgsnumber: $wgsnumber"
 spcdifffbidir=$outdir/$sampleid/sp_cdiff_fbi  # cdifftyping.sh results
 mkdir -p $spcdifffbidir
 prefix="$spcdifffbidir/$sampleid"  # prefix for indexes
-
-
-# Running QC check for enough reads (> 1000K)
-echo -e "\n# Running QC check for enough reads (> 1000K)..."
-if [ -e $read1 ]; then
-	lines=$( wc -l $read1 | awk '{print $1}' )
-	if [ $lines \< 1000000 ]; then
-		qcstatus="short"
-		echo "Found $lines lines in $read1"
-		echo "QC status: $qcstatus"
-		echo "$cmd"
-		eval $cmd
-		exit
-	else
-		echo "Found $lines lines in $read1"
-		echo "QC status: $qcstatus"
-	fi
-else
-	echo "File not found: $read1"
-	exit
-fi
 
 
 # Filtering reads with serum_readfilter
