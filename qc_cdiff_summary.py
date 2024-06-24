@@ -30,11 +30,16 @@ def find_dirs(path):
 	return dirs
 
 
-def find_files(path):
-	"""This function finds files in a path,
-	excluding dirs."""
-	files = [os.path.join(path, file) for file in os.listdir(path) if os.path.isfile(os.path.join(path, file))]
-	return files
+def find_files(path, extension=None):
+    """This function finds files in a path with optional extension filtering,
+    excluding directories."""
+    if extension:
+        files = [os.path.join(path, file) for file in os.listdir(path)
+                 if os.path.isfile(os.path.join(path, file)) and file.endswith(extension)]
+    else:
+        files = [os.path.join(path, file) for file in os.listdir(path)
+                 if os.path.isfile(os.path.join(path, file))]
+    return files
 
 
 ## Main
@@ -50,7 +55,7 @@ for sampledir in sampledirs:
 	else:
 		outfile=open(outfile_path,"w")
 		header="false"
-	files = find_files(sampledir)
+	files = find_files(sampledir, '.csv')
 	for file in files:
 		print(file)
 		if header=="false":
