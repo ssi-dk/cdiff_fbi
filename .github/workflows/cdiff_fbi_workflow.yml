@@ -42,6 +42,7 @@ jobs:
        # step 4
       - name: Run test script
         run: |
+          conda activate cdiff_pipeline
           make test
       
       # consider adding the webhook to https://github.com/ssi-dk/bifrost_sp_cdiff/
