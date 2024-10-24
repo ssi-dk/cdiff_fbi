@@ -1,0 +1,43 @@
+name: ecoli food bourne infection workflow
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      matrix:
+        os: ["ubuntu-latest"]
+        python-version: ["3.11"]
+
+    steps:
+      # step 1: checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # step 2 use environment.yml dependencies to create conda environment
+      - name: Set up miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: ${{ matrix.python-version }}
+
+      # step 3: Create the conda environment manually
+      - name: Create conda environment
+        run: |
+          conda create --name cdiff_pipeline picard gatk4 biopython ruamel.yaml kraken bwa samtools
+
+      # step 4
+      - name: Run test script
+        run: |
+          conda activate cdiff_pipeline
+          make test
+      
+      # consider adding the webhook to https://github.com/ssi-dk/bifrost_sp_cdiff/
