@@ -24,7 +24,11 @@ process_inputs() {
                 read2="$2"
                 shift 2
                 ;;
-            -c)
+            -t)
+                threads="$2"
+                shift 2
+                ;;
+			-c)
                 contigs="$2"
                 shift 2
                 ;;
@@ -42,7 +46,7 @@ process_inputs() {
                 ;;
             *)
 				echo "Unknown option: $1"
-                echo "Usage: $0 [-i <sampleid>] [-R1 <read1>] [-R2 <read2>] [-c <contigs.fasta>]  [-o <outdir>] -db <db> -update <update:yes/no>"
+                echo "Usage: $0 [-i <sampleid>] [-R1 <read1>] [-R2 <read2>] [-c <contigs.fasta>]  [-o <outdir>] -db <db> -t <threads> -update <update:yes/no>"
                 exit 1
                 ;;
         esac
@@ -51,7 +55,7 @@ process_inputs() {
     # Check if the required arguments -db and -update are provided
     if [ -z "$db" ] || [ -z "$update" ]; then
         echo "Missing required arguments!"
-		echo "Usage: $0 [-i <sampleid>] [-R1 <read1>] [-R2 <read2>] [-c <contigs.fasta>] [-o <outdir>] -db <db> -update <update:yes/no>"
+		echo "Usage: $0 [-i <sampleid>] [-R1 <read1>] [-R2 <read2>] [-c <contigs.fasta>] [-o <outdir>] -db <db> -t <threads> -update <update:yes/no>"
         echo 
         exit 1
     fi
@@ -62,6 +66,11 @@ process_inputs "$@"
 echo -e "\n# Running..." 
 echo "$0" "$@"
 
+# Set default threads to 1 if not provided
+if [ -z "$threads" ]; then
+    threads=1
+    echo "Threads not provided. Defaulting to 1."
+fi
 
 ## Main
 # Hardcoded paths
@@ -117,6 +126,7 @@ if [ -n "$sampleid" ] || [ -n "$read1" ] || [ -n "$read2" ] || [ -n "$contigs" ]
 		[ -n "$outdir" ] && echo "Output Directory: $outdir"
 		echo "Database: $db"
 		echo "Update: $update"
+		echo "threads: $threads"
 else
     echo -e "\n# No further task to be done..."
     exit 1
@@ -135,7 +145,7 @@ prefix="$spcdifffbidir/$sampleid"  # prefix for indexes
 
 #Filtering reads with serum_readfilter
 echo -e "\n# Filtering reads with serum_readfilter..."
-cmd="serum_readfilter runfilter kraken -R1 ${read1} -R2 ${read2} -o $spcdifffbidir/cdifffiltered -db $serumdb"
+cmd="serum_readfilter runfilter kraken -R1 ${read1} -R2 ${read2} -t ${threads} -o $spcdifffbidir/cdifffiltered -db $serumdb"
 r1="$spcdifffbidir/cdifffiltered_R1.fastq"
 r2="$spcdifffbidir/cdifffiltered_R2.fastq"
 filtered_reads="$r1 $r2"

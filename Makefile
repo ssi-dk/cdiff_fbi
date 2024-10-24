@@ -13,7 +13,7 @@ test: serotyping md5serotypecheck processing md5processcheck
 serotyping:
 	@BIN_PATH=$$(dirname $$(which python)) && \
 	echo "Conda environment bin path: $$BIN_PATH" && \
-	bash cdifftyping.sh -i ERR142064 -R1 test/ERR142064_1_subset.fastq.gz -R2 test/ERR142064_2_subset.fastq.gz -c test/ERR142064_subset.fasta -o test -db db -update no
+	bash cdifftyping.sh -i ERR142064 -R1 test/ERR142064_1_subset.fastq.gz -R2 test/ERR142064_2_subset.fastq.gz -t 1 -c test/ERR142064_subset.fasta -o test -db db -update no
 
 # Step 2: Check MD5 checksum
 md5serotypecheck:
