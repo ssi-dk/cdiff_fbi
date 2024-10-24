@@ -2,18 +2,6 @@
 .secret*
 resources/*
 
-# fastq and fasta files
-*.fasta
-*.fa
-*.fsa 
-*.fasta.gz
-*.fa.gz
-*.fsa.gz 
-*.fastq
-*.fq
-*.fastq.gz 
-*.fq.gz
-
 # Python cache files
 __pycache__/
 *.py[cod]
