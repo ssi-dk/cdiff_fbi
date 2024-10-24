@@ -27,14 +27,11 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           auto-update-conda: true
+          environment-file: environment.yml
+          activate-environment: cdiff_pipeline
           python-version: ${{ matrix.python-version }}
 
-      # step 3: Create the conda environment manually
-      - name: Create conda environment
-        run: |
-          conda create --name cdiff_pipeline picard gatk4 biopython ruamel.yaml kraken bwa samtools
-
-      # step 4
+      # step 3
       - name: Run test script
         run: |
           conda activate cdiff_pipeline
