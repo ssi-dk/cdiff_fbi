@@ -30,11 +30,18 @@ jobs:
           environment-file: environment.yml
           activate-environment: cdiff_pipeline
           python-version: ${{ matrix.python-version }}
-
+      
       # step 3
+      - name: Install custom tool
+        run: |
+          git clone https://github.com/ssi-dk/serum_readfilter
+          cd serum_readfilter
+          pip install .
+          cd ..
+
+       # step 4
       - name: Run test script
         run: |
-          conda activate cdiff_pipeline
           make test
       
       # consider adding the webhook to https://github.com/ssi-dk/bifrost_sp_cdiff/
