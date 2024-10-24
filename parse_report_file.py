@@ -193,7 +193,7 @@ def write_to_csv(csv_data, csv_outfile):
 			fields = [
 			# header: "Name;cdtA/B;tcdA;tcdB;tcdClength;117del;A117T;TRST;TR6;TR10;ST;STalleles;WGS;tcdA:tcdB:tcdC:cdtA:cdtB"
 				csv_data["Name"],
-				f"{csv_data["cdtA"]}/{csv_data["cdtB"]}",
+				f"{csv_data['cdtA']}/{csv_data['cdtB']}",
 				csv_data["tcdA"],
 				csv_data["tcdB"],
 				csv_data["tcdClength"],
@@ -204,7 +204,7 @@ def write_to_csv(csv_data, csv_outfile):
 				csv_data["TR10"],
 				csv_data["ST"],
 				csv_data["WGS"],
-				f"{csv_data["cov_info"]["tcdA"]}:{csv_data["cov_info"]["tcdB"]}:{csv_data["cov_info"]["tcdC"]}:{csv_data["cov_info"]["cdtA"]}:{csv_data["cov_info"]["cdtB"]}"
+                f"{csv_data['cov_info']['tcdA']}:{csv_data['cov_info']['tcdB']}:{csv_data['cov_info']['tcdC']}:{csv_data['cov_info']['cdtA']}:{csv_data['cov_info']['cdtB']}"
 			]
 			print(";".join(fields), file=csvout)
 
