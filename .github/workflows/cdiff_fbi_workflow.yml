@@ -1,8 +1,10 @@
-name: ecoli food bourne infection workflow
+name: cdiff food bourne infection workflow
 
 on:
   push:
     branches: ["main"]
+    tags-ignore:
+      - "**"
   pull_request:
     branches: ["main"]
 
@@ -45,4 +47,26 @@ jobs:
           conda activate cdiff_pipeline
           make test
       
-      # consider adding the webhook to https://github.com/ssi-dk/bifrost_sp_cdiff/
+      # step 5
+      - name: Check git tag and create a new tag if tests pass
+        if: ${{ success() }}
+        run: |
+          COMMIT_SHORT=$(git rev-parse --short=7 HEAD)
+          DIR_NAME=$(basename $(pwd))
+          TAG_NAME="${DIR_NAME}.${GITHUB_SHA::7}.$(date +%d-%m-%Y)"
+          git tag $TAG_NAME
+          git push origin $TAG_NAME --no-verify
+          echo "$TAG_NAME"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      # Step 6: Trigger bifrost_sp_cdiff workflow
+      - name: Workflow dispatch with API - trigger bifrost_sp_cdiff workflow 
+        if: ${{ success() }}
+        run: |
+            curl -v -L \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.FBI_DISPATCH_TOKEN }}" \
+            https://api.github.com/repos/ssi-dk/bifrost_sp_cdiff/dispatches \
+            -d '{"event_type":"cdiff-fbi-webhook"}'
