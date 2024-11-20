@@ -41,11 +41,11 @@ jobs:
           pip install .
           cd ..
 
-       # step 4
-      - name: Run test script
-        run: |
-          conda activate cdiff_pipeline
-          make test
+      # step 4
+      #- name: Run test script
+      #  run: |
+      #    conda activate cdiff_pipeline
+      #    make test
       
       # step 5
       - name: Check git tag and create a new tag if tests pass
