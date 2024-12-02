@@ -65,6 +65,8 @@ process_inputs() {
 process_inputs "$@"
 echo -e "\n# Running..." 
 echo "$0" "$@"
+tooldir=$(dirname "$0")
+echo "$tooldir"
 
 # Set default threads to 1 if not provided
 if [ -z "$threads" ]; then
@@ -142,7 +144,7 @@ spcdifffbidir=$outdir/$sampleid/sp_cdiff_fbi  # cdifftyping.sh results
 mkdir -p $spcdifffbidir
 prefix="$spcdifffbidir/$sampleid"  # prefix for indexes
 
-
+echo $spcdifffbidir
 #Filtering reads with serum_readfilter
 echo -e "\n# Filtering reads with serum_readfilter..."
 cmd="serum_readfilter runfilter kraken -R1 ${read1} -R2 ${read2} -t ${threads} -o $spcdifffbidir/cdifffiltered -db $serumdb"
@@ -168,7 +170,10 @@ fi
 
 # Translating sam to bam and sorting by position (reference) with samtools
 echo -e "\n# Translating sam to bam and sorting by position (reference) with samtools..."
-cmd="samtools view -b $prefix.sam | samtools sort -o $prefix.bam"
+#cmd="samtools view -b $prefix.sam | samtools sort -Obam -o $prefix.bam"
+cmd="samtools sort $prefix.sam -O bam -T temp -o $prefix.bam"
+#samtools sort sp_cdiff__v0.0.1/testrun_ec___24000006_MW-ESCEC/sp_cdiff_fbi/testrun_ec___24000006_MW-ESCEC.sam -O bam -T temp -o sp_cdiff__v0.0.1/testrun_ec___24000006_MW-ESCEC/sp_cdiff_fbi/testrun_ec___24000006_MW-ESCEC.bam
+
 if [ -e "$prefix.bam" ]; then
 	echo "Skipping translation and sorting... bam file exists: $prefix.bam "
 else
@@ -206,17 +211,18 @@ else
 	gatk DepthOfCoverage -R $reference -I $prefix.bam -L $intervals -O $prefix.coverage
 fi
 
+echo "Rundir: $rundir"
 
 # Extracting genes and indels from vcf files with python
 echo -e "\n# Extracting genes and indels from vcf files with python..."
-cmd="python3 extract_genes_and_indels_from_vcf.py -i $prefix.indel.vcf -o $prefix -c $prefix.coverage -b $intervals"
+cmd="python3 $tooldir/extract_genes_and_indels_from_vcf.py -i $prefix.indel.vcf -o $prefix -c $prefix.coverage -b $intervals"
 echo $cmd
 eval $cmd
 
 
 # Finding trst with trstfinder
 echo -e "\n# Finding trst with trstfinder..."
-cmd="python3 TRSTfinder3.py -i $contigs -db $trstdb -o $prefix'_TRST.fasta'"
+cmd="python3 $tooldir/TRSTfinder3.py -i $contigs -db $trstdb -o $prefix'_TRST.fasta'"
 if [ -e $prefix"_TRST.fasta" ]; then
 	echo "Skipping finding trst... file exists: $prefix'_TRST.fasta'"
 else

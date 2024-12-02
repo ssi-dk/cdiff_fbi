@@ -46,6 +46,9 @@ process_inputs "$@"
 echo -e "\n# Running..." 
 echo "$0" "$@"
 
+tooldir=$(dirname "$0")
+echo "$tooldir"
+
 
 ## Main
 # Hardcoded paths
@@ -95,7 +98,7 @@ fi
 
 # Generating qcfile with python
 echo -e "\n# Generating qcfile with python..."
-cmd="python3 parse_report_file.py -r $report -w $wgsnumber -s '$stbit' -o $indir/$sampleid"
+cmd="python3 $tooldir/parse_report_file.py -r $report -w $wgsnumber -s '$stbit' -o $indir/$sampleid"
 if [ -e "$indir/$sampleid/$sampleid.csv" ] && [ -e "$indir/$sampleid/$sampleid.json" ]; then
 	echo "Skipping generating qcfile... qcfiles exist: $indir/$sampleid/$sampleid.csv, $indir/$sampleid/$sampleid.json"
 else
