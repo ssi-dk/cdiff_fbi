@@ -71,7 +71,7 @@ def process_tcdAB_genes(line, csv_data):
 		if line.startswith(f"Found in {gene}:"):
 			answer = line.strip().split(":")[1].split(";")
 			if answer[0] == "Gene is present":
-				csv_data[f"{gene}"] = "+"
+				csv_data[f"{gene}"] = "positive"
 			csv_data["cov_info"][f"{gene}"] = answer[1]
 
 	return csv_data
@@ -86,7 +86,7 @@ def process_tcdC_gene(line, csv_data):
 		csv_data["tcdClength"] = indellength(line.split(":", 1)[1].split(";")[2])
 		
 		if "18499: ('CT', 'C')" in line:
-			csv_data["117del"] = "+"
+			csv_data["117del"] = "position"
 			
 			remaining = csv_data["tcdClength"].split("_")
 			first = remaining.pop(0)
@@ -97,7 +97,7 @@ def process_tcdC_gene(line, csv_data):
 			else:
 				csv_data["tcdClength"] = "0"
 		else:
-			csv_data["117del"] = "-"
+			csv_data["117del"] = "negative"
 	return csv_data
 
 
@@ -114,7 +114,7 @@ def process_A117T(line, csv_data):
 			index = header.index("DP")
 			depth = answer[9].split(":")[index]
 			if int(depth) > 20:
-				csv_data["A117T"] = "+"
+				csv_data["A117T"] = "positive"
 	return csv_data
 
 
@@ -127,7 +127,7 @@ def process_cdtAB_genes(line, csv_data):
 		if line.startswith(f"Found in {gene}:"):
 			answer = line.split(":", 1)[1].split(";")
 			if answer[0] == "Gene is present":
-				csv_data[f"{gene}"] = "+"
+				csv_data[f"{gene}"] = "positive"
 			csv_data["cov_info"][f"{gene}"] = answer[1]
 	return csv_data
 
@@ -161,13 +161,13 @@ def parse_report(report_file, stbit, wgsnumber):
 	with open(report_file, "r") as report:
 		csv_data = {
 			"Name": "-",
-			"cdtA": "-",
-			"cdtB": "-",
-			"tcdA": "-",
-			"tcdB": "-",
+			"cdtA": "negative",
+			"cdtB": "negative",
+			"tcdA": "negative",
+			"tcdB": "negative",
 			"tcdClength": "0",
-			"117del": "-",
-			"A117T": "-",
+			"117del": "negative",
+			"A117T": "negative",
 			"TRST": "-",
 			"TR6": "-",
 			"TR10": "-",
