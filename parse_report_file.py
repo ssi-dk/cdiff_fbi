@@ -86,7 +86,7 @@ def process_tcdC_gene(line, csv_data):
 		csv_data["tcdClength"] = indellength(line.split(":", 1)[1].split(";")[2])
 		
 		if "18499: ('CT', 'C')" in line:
-			csv_data["117del"] = "position"
+			csv_data["117del"] = "positive"
 			
 			remaining = csv_data["tcdClength"].split("_")
 			first = remaining.pop(0)
