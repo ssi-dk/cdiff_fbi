@@ -13,7 +13,6 @@ import json
 parser = argparse.ArgumentParser(description="parse_report_file.py")
 parser.add_argument("-r", "--report_file", help="report_file.txt")
 parser.add_argument("-w", "--wgsnumber", help="wgsnumber", default="NA")
-parser.add_argument("-s", "--stbit", help="ST string", default="ST;NA:NA")
 parser.add_argument("-o", "--output_dir", default="output")
 args = parser.parse_args()
 
@@ -22,7 +21,7 @@ args = parser.parse_args()
 def print_header_to_output(csv_outfile):
 	"""Print header to a file
 	"""
-	header = "Name;cdtA/B;tcdA;tcdB;tcdClength;117del;A117T;TRST;TR6;TR10;ST;STalleles;WGS;tcdA:tcdB:tcdC:cdtA:cdtB"
+	header = "Name;cdtA/B;tcdA;tcdB;tcdClength;117del;A117T;TRST;TR6;TR10;STalleles;WGS;tcdA:tcdB:tcdC:cdtA:cdtB"
 	csv_outfile=open(csv_outfile, "w")
 	print(header, file=csv_outfile)
 	return header
@@ -171,7 +170,6 @@ def parse_report(report_file, stbit, wgsnumber):
 			"TRST": "-",
 			"TR6": "-",
 			"TR10": "-",
-			"ST": f"{stbit}",
 			"WGS": f"{wgsnumber}",
 			"cov_info": {"tcdA": "-", "tcdB": "-", "tcdC": "-", "cdtA": "-", "cdtB": "-"}
 		}
@@ -202,7 +200,6 @@ def write_to_csv(csv_data, csv_outfile):
 				csv_data["TRST"],
 				csv_data["TR6"],
 				csv_data["TR10"],
-				csv_data["ST"],
 				csv_data["WGS"],
 				f"{csv_data["cov_info"]["tcdA"]}:{csv_data["cov_info"]["tcdB"]}:{csv_data["cov_info"]["tcdC"]}:{csv_data["cov_info"]["cdtA"]}:{csv_data["cov_info"]["cdtB"]}"
 			]

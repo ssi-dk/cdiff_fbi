@@ -128,7 +128,7 @@ rundir=$(basename $(dirname "$read1"))
 echo "Rundir: $rundir"
 wgsnumber=$(echo "$rundir"| grep -oE "N_WGS_[0-9]{3}") || wgsnumber=$rundir
 echo "Wgsnumber: $wgsnumber"
-spcdifffbidir=$outdir/$sampleid/sp_cdiff_fbi  # cdifftyping.sh results
+spcdifffbidir=$outdir/sp_cdiff_fbi  # cdifftyping.sh results
 mkdir -p $spcdifffbidir
 prefix="$spcdifffbidir/$sampleid"  # prefix for indexes
 
